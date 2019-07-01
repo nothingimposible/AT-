@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import pojo.User;
 import pojo.Vote;
 
 @Repository("voteDao")
@@ -16,4 +17,5 @@ public interface VoteDao {
   public Vote searchOne(Vote vote);
   public ArrayList<Vote> searchName(Vote vote);
   public int selectId();
+  public User selectUser(Vote vote);
 }

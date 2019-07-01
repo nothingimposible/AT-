@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dao.OptionsDao;
 import pojo.Options;
 import pojo.OptionsVo;
+import pojo.Vote;
 
 @Service("optionsService")
 @Transactional
@@ -19,8 +21,8 @@ public class OptionsService {
 		 return optionsDao.insertOptions(vo);
 	 }
 	 
-	 public List<Options> selectOptions(Options op){
-		 return optionsDao.selectOptions(op);
+	 public ArrayList<Options> selectOptions(Vote vote){
+		 return optionsDao.selectOptions(vote);
 	 }
 	 
 	 public int selectId(){

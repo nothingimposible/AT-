@@ -25,4 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  <select id="selectId" resultType="Integer">
  SELECT MAX(VS_ID) FROM vote_subject
  </select>
+ 
+ <select id="selectUser" resultType="User" parameterType="Vote">
+ SELECT distinct vote_user.* FROM vote_user,vote_item,vote_subject WHERE vote_item.VS_ID=vote_subject.VS_ID
+AND vote_item.VU_USER_ID=vote_user.VU_USER_ID AND vote_subject.VS_ID=#{VS_ID}
+ </select>
 </mapper>

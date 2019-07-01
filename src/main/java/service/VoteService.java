@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dao.VoteDao;
+import pojo.User;
 import pojo.Vote;
 
 @Service("voteService")
@@ -33,5 +34,8 @@ public class VoteService {
 	  
 	  public int selectId(){
 		  return voteDao.selectId();
+	  }
+	  public User selectUser(Vote vote){
+		  return voteDao.selectUser(vote);
 	  }
 }

@@ -29,6 +29,7 @@ public class VoteController {
     private VoteDao voteDao;
     @Autowired
     private ItemDao itemDao;
+    
     @RequestMapping(value="/send")
     public String sendvote(){
     	return "sendvote";
@@ -65,24 +66,35 @@ public class VoteController {
     	return "main";
     }
     
-    @RequestMapping(value="/seachvote")
-    public String searchadd(@ModelAttribute Vote vot,OptionsVo vo,HttpSession session){
-		return null;
+    @RequestMapping(value="/searchvote")
+    public String searchadd(@ModelAttribute Model model){
+		return "main";
     }
     
     @RequestMapping(value="/votelist")
-    public String votelist(@ModelAttribute Model model,HttpSession session){
+    public String votelist(@ModelAttribute Model model){
+    	System.out.println("前");
     	ArrayList<SubjectList> list=new ArrayList<SubjectList>();
     	ArrayList<Vote> vote=voteDao.searchAll();
+    	System.out.println(vote.size());
     	for(int i=0;i<vote.size();i++){
     		SubjectList sl=new SubjectList();
-    		
-    		
+    		User us=voteDao.selectUser(vote.get(i));
+    		ArrayList<Options> opts= optionsDao.selectOptions(vote.get(i));
+    		sl.setOptions(opts);
+    		sl.setUser(us);
     		sl.setVote(vote.get(i));
-    		
+    		list.add(sl);
     	}
-    	SubjectList subj;
+    	System.out.println("list="+list.size());
+    	int u;
+    	for( u=0;u<list.size();u++){
+    		System.out.println("qwe");
+    		System.out.println(list.get(u).toString());
+    	}
     	
+    	System.out.println("后");
+    	model.addAttribute("votelist", list);
 		return "main";
     }
     
