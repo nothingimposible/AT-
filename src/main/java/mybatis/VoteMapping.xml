@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.VoteDao">
+<!--   <select id="selectUserByUname" resultType="pojo.User" parameterType="pojo.User">
+   select * from vote_user
+  </select> -->
+ <insert id="insertVote" parameterType="Vote">
+   INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE) VALUES(NULL,#{VS_TITLE},#{VS_TYPE})
+ </insert>
+ 
+ <select id="searchAll" resultType="Vote">
+   SELECT * FROM vote_subject
+ </select>
+ 
+ <select id="searchOne" resultType="Vote" parameterType="Vote">
+   SELECT * FROM vote_subject WHERE VS_ID=#{VS_ID}
+ </select>
+ 
+ <select id="searchName" resultType="Vote" parameterType="Vote">
+  SELECT * FROM vote_subject WHERE VS_TITLE LIKE '%#{VS_TITLE}%'
+ </select>
+ 
+ <select id="selectId" resultType="Integer">
+ SELECT MAX(VS_ID) FROM vote_subject
+ </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.OptionsDao">
+
+<insert id="insertOptions" parameterType="Options">
+   INSERT INTO vote_option (VO_ID,VO_OPTION,VS_ID,NUMBER) VALUES(NULL,#{VO_OPTION},#{VS_ID},0)
+</insert>
+
+<select id="selectOptions" parameterType="Options" resultType="Options">
+  SELECT * FROM vote_option WHERE VS_ID=#{VS_ID}
+</select>
+
+<select id="selectId" resultType="Integer">
+  SELECT MAX(VO_ID) FROM vote_option
+</select>
+</mapper>

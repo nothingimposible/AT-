@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserDao">
+<!--   <select id="selectUserByUname" resultType="pojo.User" parameterType="pojo.User">
+   select * from vote_user
+  </select> -->
+ <insert id="insertUser" parameterType="User">
+  insert into vote_user (VU_USER_ID,VU_USER_NAME,VU_PASSWORD,VU_STATUS,VU_VERSION)
+  values(#{VU_USER_ID},#{VU_USER_NAME},#{VU_PASSWORD},#{VU_STATUS},#{VU_VERSION})
+ </insert>
+ 
+ <select id="searchUser" resultType="Integer" parameterType="User">
+  SELECT COUNT(*) FROM vote_user WHERE VU_USER_ID=#{VU_USER_ID} AND VU_PASSWORD=#{VU_PASSWORD}
+ </select>
+  
+ <select id="searchName" resultType="String" parameterType="User">
+  SELECT VU_USER_NAME FROM vote_user WHERE VU_USER_ID=#{VU_USER_ID}
+ </select>
+ 
+</mapper>
