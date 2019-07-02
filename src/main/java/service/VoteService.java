@@ -38,4 +38,10 @@ public class VoteService {
 	  public User selectUser(Vote vote){
 		  return voteDao.selectUser(vote);
 	  }
+	  public int selectNumber(){
+		  return voteDao.selectNumber();
+	  }
+	  public Vote searchById(int v){
+		  return voteDao.searchById(v);
+	  }
 }

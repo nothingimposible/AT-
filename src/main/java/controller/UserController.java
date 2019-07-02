@@ -16,6 +16,7 @@ import pojo.User;
 public class UserController {
 	@Autowired
 	private UserDao userDao;
+
 	@RequestMapping(value="/add")
 	public String useradd(){
 		
@@ -46,7 +47,7 @@ public class UserController {
 	    model.addAttribute("username", us.getVU_USER_NAME());
 		if(userDao.searchUser(us)>0){
 			session.setAttribute("useronline", us);
-			return "main";
+			return "login";
 		}
         
 		System.out.println("login");

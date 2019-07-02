@@ -5,7 +5,6 @@ public class Item {
    private int VO_ID;
    private int VS_ID;
    private String VU_USER_ID;
-   private int VU_VISION;
 public int getVI_ID() {
 	return VI_ID;
 }
@@ -31,17 +30,9 @@ public void setVU_USER_ID(String vU_USER_ID) {
 	VU_USER_ID = vU_USER_ID;
 }
 
-public int getVU_VISION() {
-	return VU_VISION;
-}
-public void setVU_VISION(int vU_VIVSION) {
-	VU_VISION = vU_VIVSION;
-}
 @Override
 public String toString() {
-	return "Item [VI_ID=" + VI_ID + ", VO_ID=" + VO_ID + ", VS_ID=" + VS_ID + ", VU_USER_ID=" + VU_USER_ID
-			+ ", VU_VISION=" + VU_VISION + "]";
+	return "Item [VI_ID=" + VI_ID + ", VO_ID=" + VO_ID + ", VS_ID=" + VS_ID + ", VU_USER_ID=" + VU_USER_ID;
 }
 
-   
 }

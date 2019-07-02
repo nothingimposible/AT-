@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    select * from vote_user
   </select> -->
  <insert id="insertVote" parameterType="Vote">
-   INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE) VALUES(NULL,#{VS_TITLE},#{VS_TYPE})
+   INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE,VU_USER_ID) VALUES(NULL,#{VS_TITLE},#{VS_TYPE},#{VU_USER_ID})
  </insert>
  
  <select id="searchAll" resultType="Vote">
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  </select>
  
  <select id="searchOne" resultType="Vote" parameterType="Vote">
-   SELECT * FROM vote_subject WHERE VS_ID=#{VS_ID}
+   SELECT * FROM vote_subject WHERE VS_TITLE=#{VS_TITLE} AND VU_USER_ID=#{VU_USER_ID}
  </select>
  
  <select id="searchName" resultType="Vote" parameterType="Vote">
@@ -27,7 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  </select>
  
  <select id="selectUser" resultType="User" parameterType="Vote">
- SELECT distinct vote_user.* FROM vote_user,vote_item,vote_subject WHERE vote_item.VS_ID=vote_subject.VS_ID
-AND vote_item.VU_USER_ID=vote_user.VU_USER_ID AND vote_subject.VS_ID=#{VS_ID}
+ SELECT * FROM vote_user WHERE VU_USER_ID=#{VU_USER_ID}
+ </select>
+ 
+ <select id="selectNumber" resultType="Integer">
+ SELECT COUNT(*) FROM vote_subject
+ </select>
+ 
+ <select id="searchById" resultType="Vote" parameterType="Integer">
+ SELECT * FROM vote_subject WHERE VS_ID=#{v}
  </select>
 </mapper>

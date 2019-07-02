@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,31 +40,27 @@ public class VoteController {
     public String addvote(@ModelAttribute Vote vot,OptionsVo vo,HttpSession session){
     	Vote vote=vot;
         Vote vote1;
-    	int id=voteDao.selectId()+1;
+    	User user=(User) session.getAttribute("useronline");
+    	int id=0;
     	System.out.println("前");
-      	voteDao.insertVote(vote);
-      	User user=(User) session.getAttribute("useronline");
+    	vote.setVU_USER_ID(user.getVU_USER_ID());
+      	int j1 = voteDao.insertVote(vote);
+      	System.out.println("添加："+j1);
       	System.out.println(user.toString());
-        vote1=voteDao.searchOne(vote);
-        System.out.println(id);
+      	vote1=voteDao.searchOne(vote);
+      	id=vote1.getVS_ID();
+        System.out.println("voteid="+vote1.getVS_ID());
     	OptionsVo opv=vo;
     	ArrayList<Options> op=(ArrayList<Options>) opv.getLis();
     	for(int i=0;i<op.size();i++){
-    		Item item=new Item();
     		op.get(i).setVS_ID(id);
     		Options options=op.get(i);
-    		item.setVU_USER_ID(user.getVU_USER_ID());
-    		item.setVS_ID(options.getVS_ID());
-    		item.setVU_VISION(0);
-    		int itemId=optionsDao.selectId()+1;
-    		item.setVO_ID(itemId);
-    		System.out.println(item.toString());
-    		itemDao.insertItem(item);
     		System.out.println(options.toString());
     		optionsDao.insertOptions(options);
+    		
     	}
     	System.out.println("后");
-    	return "main";
+    	return "login";
     }
     
     @RequestMapping(value="/searchvote")
@@ -72,18 +69,21 @@ public class VoteController {
     }
     
     @RequestMapping(value="/votelist")
-    public String votelist(@ModelAttribute Model model){
+    public String votelist(HttpServletRequest request){
     	System.out.println("前");
     	ArrayList<SubjectList> list=new ArrayList<SubjectList>();
     	ArrayList<Vote> vote=voteDao.searchAll();
+    	ArrayList<Integer> flag=new ArrayList<Integer>();
     	System.out.println(vote.size());
     	for(int i=0;i<vote.size();i++){
     		SubjectList sl=new SubjectList();
     		User us=voteDao.selectUser(vote.get(i));
     		ArrayList<Options> opts= optionsDao.selectOptions(vote.get(i));
+           
     		sl.setOptions(opts);
     		sl.setUser(us);
     		sl.setVote(vote.get(i));
+    		flag.add(itemDao.isEmpty(vote.get(i)));
     		list.add(sl);
     	}
     	System.out.println("list="+list.size());
@@ -93,9 +93,25 @@ public class VoteController {
     		System.out.println(list.get(u).toString());
     	}
     	
+    	//System.out.println(itemDao.isEmpty(list.get(0).getVote()));
     	System.out.println("后");
-    	model.addAttribute("votelist", list);
+    	request.setAttribute("flag", flag);
+    	request.setAttribute("votelist", list);
 		return "main";
+    }
+    
+    @RequestMapping(value="/vote")
+    public String vote(HttpServletRequest request){
+    	String stringid=request.getParameter("subjectid");
+    	int id=Integer.parseInt(stringid);
+    	Vote vote=voteDao.searchById(id);
+    	ArrayList<Options> option=optionsDao.selectOptions(vote);
+    	System.out.println(vote.toString());
+    	for(Options e:option)
+    		System.out.println(e.toString());
+    	request.setAttribute("option", option);
+    	request.setAttribute("vote", vote);
+    	return "vote";
     }
     
 }

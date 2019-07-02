@@ -18,4 +18,6 @@ public interface VoteDao {
   public ArrayList<Vote> searchName(Vote vote);
   public int selectId();
   public User selectUser(Vote vote);
+  public int selectNumber();
+  public Vote searchById(int v);
 }
