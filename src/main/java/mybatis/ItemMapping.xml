@@ -9,7 +9,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </insert>
 
 <select id="isEmpty" resultType="Integer" parameterType="Vote">
- SELECT COUNT(*) FROM vote_item,vote_user WHERE
-vote_item.VU_USER_ID=vote_user.VU_USER_ID AND VS_ID=#{VS_ID}
+ SELECT COUNT(*) FROM vote_item WHERE VS_ID=#{VS_ID}
+</select>
+
+<select id="selectnumber" resultType="Integer" parameterType="Options">
+  SELECT COUNT(*) FROM vote_item WHERE VO_ID=#{VO_ID}
 </select>
 </mapper>

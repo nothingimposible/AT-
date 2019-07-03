@@ -97,7 +97,17 @@
 <body>
 <%
 User us=(User)session.getAttribute("useronline");
-
+String name;
+String url;
+if(us==null){
+	name="请登录";
+	url="/user/login";
+}
+else{
+	name=us.getVU_USER_NAME();
+	url="/vote/votelist";
+}
+	
 %>
     <div class="main">
 		<div class="container">
@@ -106,13 +116,13 @@ User us=(User)session.getAttribute("useronline");
 				<div class="top">
 					<div class="col-log-12">
 					    <div class="col-lg-2 login" style="background: #5B6270;">
-					        <p id="username" class="username"><a href="#"><%=us.getVU_USER_NAME() %></a>,<span>你好!</span></p>
+					        <p id="username" class="username"><a href="${pageContext.request.contextPath }<%=url %>" ><%=name %></a>,<span>你好!</span></p>
 					    </div>
 					    <div class="login col-lg-2" style="background: #F5F7F9;">
-					        <a class="destory">注销</a>
+					        <a href="${pageContext.request.contextPath }/user/logout" class="destory">注销</a>
 					    </div>
 					    <div class="login col-lg-2">
-							<a class="destory">发布投票</a>
+							<a href="${pageContext.request.contextPath }/vote/send" class="destory">发布投票</a>
 						</div>
 					    <div class="login col-lg-2">
 							<a class="destory">投票维护</a>
@@ -131,7 +141,7 @@ User us=(User)session.getAttribute("useronline");
   ItemDao itemDao=null;
       ArrayList<SubjectList> sub= (ArrayList<SubjectList>)request.getAttribute("votelist");
       ArrayList<Integer> flag=(ArrayList<Integer>)request.getAttribute("flag");
-  int number=sub.size();
+     int number=sub.size();
        for(int i=0;i<number;i++){  
 	 //  out.print("<p>"+sub.get(i).toString()+"</p>");
 	    out.print("<div class='vote'>");
@@ -145,7 +155,7 @@ User us=(User)session.getAttribute("useronline");
 	   if(flag.get(i)<1)
 	   out.print("<a href=\""+basePath+"vote/vote?subjectid="+sub.get(i).getVote().getVS_ID()+"\">进入投票</a>");
 	   else
-		   out.print("<a href='"+basePath+"vote/vote?subjectid="+sub.get(i).getVote().getVS_ID()+"'>查看结果</a>");  
+	   out.print("<a href='"+basePath+"item/result?subjectid="+sub.get(i).getVote().getVS_ID()+"'>查看结果</a>");  
 	   out.print("</div>");
 	   out.print("</div>"); 
          }
@@ -170,6 +180,7 @@ User us=(User)session.getAttribute("useronline");
 		            <div class="last">
 						<ul class="page">
 							<li><a href="#"><<</a> </li>
+							
 							<li><a href="#">1</a> </li>
 							<li><a href="#">2</a> </li>
 							<li><a href="#">>></a> </li>

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page import="pojo.Vote" %>
+<%@ page import="pojo.Options" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -43,33 +46,48 @@
 					<div class="logintop">
 						<h1>在线投票网</h1>
 					</div>
-
+                    <%
+                     Vote vote=(Vote)request.getAttribute("vote");
+                     ArrayList<Integer> num=(ArrayList)request.getAttribute("num");
+                     ArrayList<Options> options=(ArrayList)request.getAttribute("options");
+                     ArrayList<String> width=new ArrayList<String>();
+                     double znum1=0;
+                     for(int i=0;i<num.size();i++){
+                    	 znum1+=num.get(i);
+                     }
+                     for(int i=0;i<num.size();i++){
+                    	 double number=num.get(i)/znum1*100;
+                    	 String snum=String.valueOf(number);
+                    	 if(snum.length()>6)
+                    	 snum=snum.substring(0, 5);
+                    	 width.add(snum+"%");
+                     }
+                     String znum=String.valueOf(znum1);
+                     znum=znum.substring(0, znum.length()-2);
+                    %>
 					<div class="vote">
 						<h3>投票结果</h3>
 						<hr />
-						<h1>黑界知名家族最新排名</h1>
+						<h1><%=vote.getVS_TITLE() %></h1>
 						<form action="" method="post">
 							<ul>
-								<li>
-								   <label>选项1(56.15%,89票)</label>
-								   <div class="len" style="width: 56.15%"></div>
-								</li>
-								<li>
-								   <label>选项1</label>
-								    <div class="len" style="width: 12.36%;"></div>
-								</li>
-								<li>
-								    <label>选项1</label>
-									 <div class="len" style="width: 32.15%;"></div>
-								</li>
+							<%
+							  for(int i=0;i<options.size();i++){
+								  out.print("<li><label>");
+								  out.print(options.get(i).getVO_TITLE()+"("+width.get(i)+",&nbsp"+num.get(i)+"票)</label>");
+								  out.print(" <div class=\"len\" style=\"width:"+width.get(i)+"\"></div></li>");
+							  }
+							%>
+							
 							</ul>
-							<h4 style="margin-top: 20px;">总票数：156票</h4>
+							<h4 style="margin-top: 20px;">总票数：<%=znum %>票</h4>
 						</form>
 						
 						
 						<hr />
 					</div>
 				</div>
+				
 			</div>
 		</div>
 </body>

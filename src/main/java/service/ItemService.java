@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dao.ItemDao;
 import pojo.Item;
+import pojo.Options;
 import pojo.Vote;
 @Service("itemService")
 @Transactional
@@ -16,6 +17,9 @@ public class ItemService {
 		return itemDao.insertItem(item);
 	}
 	  public int isEmpty(Vote vote){
-		  return itemDao.hashCode();
+		  return itemDao.isEmpty(vote);
+	  }
+	  public int selectnumber(Options option){
+		  return itemDao.selectnumber(option);
 	  }
 }

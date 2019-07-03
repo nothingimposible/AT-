@@ -78,7 +78,6 @@
 							<div id="div1" >
 							<h3>投票标题</h3>
 							<input name="VS_TITLE" class="inputc" style="width: 300px;"/>
-						
 							<ul id="ul1"></ul>
 							</div>
 							<button type="button" id="b" onclick="s()">增加选项</button>
@@ -141,8 +140,6 @@
 					getid(inp).name="lis["+aa2+"].VO_TITLE";
 					getid(spa).textContent="选项"+num;
 					getid(spa).id="spa"+aa2;
-					
-					
 					getid("ul1").childNodes[i].id=parseInt(getid("ul1").childNodes[i].id)-1;
 				}
 			}

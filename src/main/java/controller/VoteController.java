@@ -79,7 +79,6 @@ public class VoteController {
     		SubjectList sl=new SubjectList();
     		User us=voteDao.selectUser(vote.get(i));
     		ArrayList<Options> opts= optionsDao.selectOptions(vote.get(i));
-           
     		sl.setOptions(opts);
     		sl.setUser(us);
     		sl.setVote(vote.get(i));
@@ -92,8 +91,6 @@ public class VoteController {
     		System.out.println("qwe");
     		System.out.println(list.get(u).toString());
     	}
-    	
-    	//System.out.println(itemDao.isEmpty(list.get(0).getVote()));
     	System.out.println("后");
     	request.setAttribute("flag", flag);
     	request.setAttribute("votelist", list);

@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,11 @@ public class UserController {
 		return "register";
 		
 	}
+	@RequestMapping(value="/logout")
+	public String logout(HttpSession session,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		session.invalidate();
+		return "forward:/vote/votelist";
+	}
 	@RequestMapping(value="/adduser")
 	public String useradduser(@ModelAttribute User username){
         User us=username;
@@ -38,7 +47,7 @@ public class UserController {
 		return "login";
 	}
 	@RequestMapping(value="/loginjudge")
-	public String userlogin(@ModelAttribute User username,Model model,HttpSession session){
+	public String userlogin(@ModelAttribute User username,Model model,HttpSession session,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		User us=username;
 		
 		us.setVU_USER_NAME(userDao.searchName(us));
@@ -47,7 +56,8 @@ public class UserController {
 	    model.addAttribute("username", us.getVU_USER_NAME());
 		if(userDao.searchUser(us)>0){
 			session.setAttribute("useronline", us);
-			return "login";
+			return "forward:/vote/votelist";
+			
 		}
         
 		System.out.println("login");
