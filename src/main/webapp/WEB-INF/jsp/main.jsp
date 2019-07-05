@@ -122,10 +122,22 @@ else{
 					        <a href="${pageContext.request.contextPath }/user/logout" class="destory">注销</a>
 					    </div>
 					    <div class="login col-lg-2">
-							<a href="${pageContext.request.contextPath }/vote/send" class="destory">发布投票</a>
+					    
+							<a href="${pageContext.request.contextPath }/vote/send" class="destory">
+							<%
+							if(us!=null)
+								out.print("发布投票");
+							%>		
+							</a>
 						</div>
 					    <div class="login col-lg-2">
-							<a class="destory">投票维护</a>
+					     <a href="${pageContext.request.contextPath }/vote/maintainvote" class="destory">
+					    <%
+					     if(us!=null){
+					    	 out.print("投票维护");
+					     }
+					    %>
+						</a>
 						</div>
 					    <div class="login col-lg-2">
 							<a class="destory">投票查询</a>

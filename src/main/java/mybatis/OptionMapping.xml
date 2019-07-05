@@ -16,4 +16,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   SELECT MAX(VO_ID) FROM vote_option
 </select>
 
+<delete id="deleteByVote" parameterType="Vote">
+DELETE FROM vote_option WHERE VS_ID=#{VS_ID}
+</delete>
+
+<delete id="deleteById" parameterType="Options">
+DELETE FROM vote_option WHERE VO_ID=#{VO_ID}
+</delete>
+
+<update id="update" parameterType="Options">
+UPDATE vote_option SET VO_OPTION=#{VO_OPTION} WHERE VO_ID=#{VO_ID}
+</update>
+
 </mapper>

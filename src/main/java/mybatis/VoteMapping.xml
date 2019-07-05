@@ -14,8 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    SELECT * FROM vote_subject
  </select>
  
- <select id="searchOne" resultType="Vote" parameterType="Vote">
-   SELECT * FROM vote_subject WHERE VS_TITLE=#{VS_TITLE} AND VU_USER_ID=#{VU_USER_ID}
+ <select id="searchOne" resultType="Vote">
+  SELECT * FROM vote_subject WHERE VS_ID = (SELECT MAX(VS_ID) FROM vote_subject)
  </select>
  
  <select id="searchName" resultType="Vote" parameterType="Vote">
@@ -37,4 +37,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  <select id="searchById" resultType="Vote" parameterType="Integer">
  SELECT * FROM vote_subject WHERE VS_ID=#{v}
  </select>
+ 
+ <select id="searchByUser" resultType="Vote" parameterType="User">
+ SELECT * FROM vote_subject WHERE VU_USER_ID=#{VU_USER_ID}
+ </select>
+ 
+ <update id="updateVote" parameterType="Vote">
+ UPDATE vote_subject SET VS_TITLE=#{VS_TITLE},VS_TYPE=#{VS_TYPE} WHERE VS_ID=#{VS_ID}
+ </update>
+ 
+ <delete id="deleteVote" parameterType="Vote">
+ DELETE FROM vote_subject WHERE VS_ID=#{VS_ID}
+ </delete>
 </mapper>

@@ -8,11 +8,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   INSERT INTO vote_item (VI_ID,VO_ID,VS_ID,VU_USER_ID) VALUES (NULL,#{VO_ID},#{VS_ID},#{VU_USER_ID})
 </insert>
 
-<select id="isEmpty" resultType="Integer" parameterType="Vote">
- SELECT COUNT(*) FROM vote_item WHERE VS_ID=#{VS_ID}
+<select id="isEmpty" resultType="Integer" parameterType="UserWithVote">
+ SELECT COUNT(*) FROM vote_item WHERE VS_ID=#{VS_ID} AND VU_USER_ID=#{VU_USER_ID}
 </select>
 
 <select id="selectnumber" resultType="Integer" parameterType="Options">
   SELECT COUNT(*) FROM vote_item WHERE VO_ID=#{VO_ID}
 </select>
+
+<select id="getflag" resultType="Integer" parameterType="UserWithOptions">
+SELECT COUNT(*) FROM vote_item WHERE VO_ID=#{VO_ID} AND VU_USER_ID=#{VU_USER_ID}
+</select>
+
+<select id="selectvotenumber" resultType="Integer" parameterType="Vote">
+ SELECT COUNT(*) FROM vote_item WHERE VS_ID=#{VS_ID}
+</select>
+
+<delete id="deleteByOptions" parameterType="Options">
+DELETE FROM vote_item WHERE VO_ID=#{VO_ID}
+</delete>
+
+<delete id="deleteByVote" parameterType="Vote">
+DELETE FROM vote_item WHERE VS_ID=#{VS_ID}
+</delete>
 </mapper>

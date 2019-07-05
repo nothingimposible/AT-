@@ -50,13 +50,17 @@
                      Vote vote=(Vote)request.getAttribute("vote");
                      ArrayList<Integer> num=(ArrayList)request.getAttribute("num");
                      ArrayList<Options> options=(ArrayList)request.getAttribute("options");
+                     ArrayList<Integer> flag=(ArrayList)request.getAttribute("flag");
                      ArrayList<String> width=new ArrayList<String>();
                      double znum1=0;
                      for(int i=0;i<num.size();i++){
                     	 znum1+=num.get(i);
                      }
                      for(int i=0;i<num.size();i++){
-                    	 double number=num.get(i)/znum1*100;
+                    	 
+                    	 double number=0;
+                    	 if(znum1!=0)
+                    	number=	num.get(i)/znum1*100;
                     	 String snum=String.valueOf(number);
                     	 if(snum.length()>6)
                     	 snum=snum.substring(0, 5);
@@ -73,8 +77,11 @@
 							<ul>
 							<%
 							  for(int i=0;i<options.size();i++){
-								  out.print("<li><label>");
-								  out.print(options.get(i).getVO_TITLE()+"("+width.get(i)+",&nbsp"+num.get(i)+"票)</label>");
+								  out.print("<li><label ");
+								  if(flag!=null)
+								  if(flag.get(i)>0)
+									  out.print("style='color:red'");
+								  out.print(">"+options.get(i).getVO_TITLE()+"("+width.get(i)+",&nbsp"+num.get(i)+"票)</label>");
 								  out.print(" <div class=\"len\" style=\"width:"+width.get(i)+"\"></div></li>");
 							  }
 							%>
@@ -82,7 +89,6 @@
 							</ul>
 							<h4 style="margin-top: 20px;">总票数：<%=znum %>票</h4>
 						</form>
-						
 						
 						<hr />
 					</div>

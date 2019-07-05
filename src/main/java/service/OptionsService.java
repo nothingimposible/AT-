@@ -28,4 +28,13 @@ public class OptionsService {
 	 public int selectId(){
 		 return optionsDao.selectId();
 	 }
+	 public int deleteByVote(Vote vote){
+		 return optionsDao.deleteByVote(vote);
+	 }
+	 public int deleteById(Options options){
+		 return optionsDao.deleteById(options);
+	 }
+	  public int update(Options options){
+		  return optionsDao.update(options);
+	  }
 }

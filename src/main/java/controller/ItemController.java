@@ -16,6 +16,7 @@ import dao.VoteDao;
 import pojo.Item;
 import pojo.Options;
 import pojo.User;
+import pojo.UserWithOptions;
 import pojo.Vote;
 
 @Controller
@@ -45,6 +46,9 @@ public String additem(HttpServletRequest request,HttpSession session){
 		System.out.println(value[i]);
 		Item item=new Item();
 		item.setVS_ID(vote.getVS_ID());
+		if(user==null)
+			item.setVU_USER_ID(null);
+		else
 		item.setVU_USER_ID(user.getVU_USER_ID());
 		item.setVO_ID(options.get(Integer.parseInt(value[i])-1).getVO_ID());
 		itemDao.insertItem(item);
@@ -65,11 +69,18 @@ public String result(HttpServletRequest request,HttpSession session){
 	Vote vote=voteDao.searchById(voteid);
 	ArrayList<Options> options=optionsDao.selectOptions(vote);
 	ArrayList<Integer> num=new ArrayList<Integer>();
+	ArrayList<Integer> flag=new ArrayList<Integer>();
 	User user=(User) session.getAttribute("useronline");
+	UserWithOptions uwp=new UserWithOptions();
+	uwp.setVU_USER_ID(user.getVU_USER_ID());
 	for(int i=0;i<options.size();i++){
 		int number=itemDao.selectnumber(options.get(i));
+		System.out.println("投票数："+number);
+		uwp.setVO_ID(options.get(i).getVO_ID());
+		flag.add(itemDao.getflag(uwp));
 		num.add(number);
 	}
+	request.setAttribute("flag", flag);
 	request.setAttribute("options", options);
 	request.setAttribute("num", num);
 	request.setAttribute("vote", vote);

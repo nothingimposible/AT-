@@ -14,10 +14,13 @@ import pojo.Vote;
 public interface VoteDao {
   public int insertVote(Vote vote);
   public ArrayList<Vote> searchAll();
-  public Vote searchOne(Vote vote);
+  public Vote searchOne();
   public ArrayList<Vote> searchName(Vote vote);
   public int selectId();
   public User selectUser(Vote vote);
   public int selectNumber();
   public Vote searchById(int v);
+  public ArrayList<Vote> searchByUser(User user);
+  public int updateVote(Vote vote);
+  public int deleteVote(Vote vote);
 }

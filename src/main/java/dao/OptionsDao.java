@@ -16,4 +16,7 @@ public interface OptionsDao {
    public int insertOptions(Options vo);
    public ArrayList<Options> selectOptions(Vote vote);
    public int selectId();
+   public int deleteByVote(Vote vote);
+   public int deleteById(Options options);
+   public int update(Options options);
 }

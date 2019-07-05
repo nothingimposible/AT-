@@ -1,8 +1,6 @@
 package service;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +22,8 @@ public class VoteService {
 		  return voteDao.searchAll();
 	  }
 	  
-	  public Vote searchOne(Vote vote){
-		  return voteDao.searchOne(vote);
+	  public Vote searchOne(){
+		  return voteDao.searchOne();
 	  }
 	  
 	  public ArrayList<Vote> searchName(Vote vote){
@@ -44,4 +42,14 @@ public class VoteService {
 	  public Vote searchById(int v){
 		  return voteDao.searchById(v);
 	  }
+	  public ArrayList<Vote> searchByUser(User user){
+		  return voteDao.searchByUser(user);
+	  }
+	  public int updateVote(Vote vote){
+		  return voteDao.updateVote(vote);
+	  }
+	  public int deleteVote(Vote vote){
+		  return voteDao.deleteVote(vote);
+	  }
+	  
 }
