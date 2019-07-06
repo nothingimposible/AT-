@@ -10,8 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE,VU_USER_ID) VALUES(NULL,#{VS_TITLE},#{VS_TYPE},#{VU_USER_ID})
  </insert>
  
- <select id="searchAll" resultType="Vote">
-   SELECT * FROM vote_subject
+ <select id="searchAll" resultType="Vote" parameterType="Integer">
+   SELECT * FROM vote_subject LIMIT #{v},10
  </select>
  
  <select id="searchOne" resultType="Vote">
@@ -40,6 +40,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  
  <select id="searchByUser" resultType="Vote" parameterType="User">
  SELECT * FROM vote_subject WHERE VU_USER_ID=#{VU_USER_ID}
+ </select>
+ 
+ <select id="searchpage" resultType="Integer">
+ SELECT COUNT(*) FROM vote_subject
+ </select>
+ 
+ <select id="searchByName" resultType="Vote" parameterType="Vote">
+ SELECT * FROM vote_subject WHERE VS_TITLE LIKE #{VS_TITLE}
  </select>
  
  <update id="updateVote" parameterType="Vote">

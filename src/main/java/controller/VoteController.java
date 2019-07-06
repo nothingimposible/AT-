@@ -62,31 +62,66 @@ public class VoteController {
     		
     	}
     	System.out.println("后");
-    	return "login";
+    	return "main";
     }
     
-    @RequestMapping(value="/searchvote")
-    public String searchadd(@ModelAttribute Model model){
-		return "main";
-    }
-    
-    @RequestMapping(value="/votelist")
-    public String votelist(HttpServletRequest request,HttpSession session){
-    	System.out.println("前");
+    @RequestMapping(value="/search")
+    public String searchadd(HttpServletRequest request,HttpSession session){
+    	String select=request.getParameter("search");
+    	Vote vt=new Vote();
+    	vt.setVS_TITLE("%"+select+"%");
+    	System.out.println(select);
+    	ArrayList<Vote> vote=voteDao.searchByName(vt);
+        System.out.println("balaba");
     	ArrayList<SubjectList> list=new ArrayList<SubjectList>();
-    	ArrayList<Vote> vote=voteDao.searchAll();
     	ArrayList<Integer> flag=new ArrayList<Integer>();
     	User user=(User) session.getAttribute("useronline");
-    	System.out.println(vote.size());
+    	
     	for(int i=0;i<vote.size();i++){
     		SubjectList sl=new SubjectList();
     		UserWithVote uwv=new UserWithVote();
-    		System.out.println("id前");
+    		
     		if(user==null)
     		uwv.setVU_USER_ID(null);
     		else
     		uwv.setVU_USER_ID(user.getVU_USER_ID());	
-    		System.out.println("id后");
+    		
+    		uwv.setVS_ID(vote.get(i).getVS_ID());
+    		User us=voteDao.selectUser(vote.get(i));
+    		ArrayList<Options> opts= optionsDao.selectOptions(vote.get(i));
+    		sl.setOptions(opts);
+    		sl.setUser(us);
+    		sl.setVote(vote.get(i));
+    		flag.add(itemDao.isEmpty(uwv));
+    		list.add(sl);
+    	}
+    	
+    	request.setAttribute("flag", flag);
+    	request.setAttribute("votelist", list);
+		return "searchresult";
+    }
+    
+    @RequestMapping(value="/votelist")
+    public String votelist(HttpServletRequest request,HttpSession session){
+    	String spage=request.getParameter("page");
+    	int page=1;
+    	if(spage!=null)
+    		page=Integer.parseInt(spage);
+    	
+    	ArrayList<SubjectList> list=new ArrayList<SubjectList>();
+    	ArrayList<Vote> vote=voteDao.searchAll((page-1)*10);
+    	ArrayList<Integer> flag=new ArrayList<Integer>();
+    	User user=(User) session.getAttribute("useronline");
+    	
+    	for(int i=0;i<vote.size();i++){
+    		SubjectList sl=new SubjectList();
+    		UserWithVote uwv=new UserWithVote();
+    		
+    		if(user==null)
+    		uwv.setVU_USER_ID(null);
+    		else
+    		uwv.setVU_USER_ID(user.getVU_USER_ID());	
+    		
     		uwv.setVS_ID(vote.get(i).getVS_ID());
     		User us=voteDao.selectUser(vote.get(i));
     		ArrayList<Options> opts= optionsDao.selectOptions(vote.get(i));
@@ -97,15 +132,16 @@ public class VoteController {
     		flag.add(itemDao.isEmpty(uwv));
     		list.add(sl);
     	}
-    	System.out.println("list="+list.size());
-    	int u;
-    	for( u=0;u<list.size();u++){
-    		System.out.println("qwe");
-    		System.out.println(list.get(u).toString());
-    	}
-    	System.out.println("后");
+    	
+    	int zpage=voteDao.searchpage();
+    	if(zpage%10==0)
+    		zpage=zpage/10;
+    	else
+    		zpage=zpage/10+1;
     	request.setAttribute("flag", flag);
     	request.setAttribute("votelist", list);
+    	request.setAttribute("page", page);
+    	request.setAttribute("zpage", zpage);
 		return "main";
     }
     

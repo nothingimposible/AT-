@@ -18,8 +18,8 @@ public class VoteService {
 		  return voteDao.insertVote(vote);
 	  }
 	  
-	  public ArrayList<Vote> searchAll(){
-		  return voteDao.searchAll();
+	  public ArrayList<Vote> searchAll(int num){
+		  return voteDao.searchAll(num);
 	  }
 	  
 	  public Vote searchOne(){
@@ -50,6 +50,12 @@ public class VoteService {
 	  }
 	  public int deleteVote(Vote vote){
 		  return voteDao.deleteVote(vote);
+	  }
+	  public int searchpage(){
+		  return voteDao.searchpage();
+	  }
+	  public ArrayList<Vote> searchByName(Vote v){
+		  return voteDao.searchByName(v);
 	  }
 	  
 }

@@ -95,17 +95,17 @@
 		.last .page a{
 			float: left;
 			display: block;
-			width: 40px;
-			height: 35px;
-			background: #343434;
+			width: 30px;
+			height: 30px;
+			border: 3px solid orange;
 			margin-left: 5px;
 			text-align: center;
-			line-height: 35px;
-			color: white;
+			line-height: 30px;
+			color: orange;
 			font-size: 20px;
 		}
 		.last .page a:hover{
-			background: #2ecc71;
+			color: blue;
 		}
 		.searchbox{
 			color: black;
@@ -196,10 +196,10 @@ else{
       ArrayList<SubjectList> sub= (ArrayList<SubjectList>)request.getAttribute("votelist");
       ArrayList<Integer> flag=(ArrayList<Integer>)request.getAttribute("flag");
       
-     int number=sub.size();
+       int number=sub.size();
        for(int i=0;i<number;i++){  
 	 //  out.print("<p>"+sub.get(i).toString()+"</p>");
-	    out.print("<div class='vote'>");
+	   out.print("<div class='vote'>");
 	   out.print("<div class='voteleft'>");
 	   out.print("<h4>投票内容："+sub.get(i).getVote().getVS_TITLE()+"</h2>");
 	   out.print("</div>");
@@ -222,27 +222,6 @@ else{
 		        <!--//bottom-->
 		        <div class="col-log-12">
 		            <div class="last">
-						<ul class="page">
-						<%
-						Integer ipage=(Integer)request.getAttribute("page");
-					      Integer zpage=(Integer)request.getAttribute("zpage");
-
-						if(ipage>1)
-						 out.print("<li><a href=\""+basePath+"vote/votelist?page="+(ipage-1)+"\"><<</a> </li>");
-						else
-						 out.print("<li><a href=''><<</a> </li>");
-						   for(int i=1;i<=zpage;i++){
-							   if(i==ipage)
-							   out.print("<li><a style='background: #2ecc71;' href=\""+basePath+"vote/votelist?page="+i+"\">"+i+"</a> </li>");
-							   else
-							   out.print("<li><a href=\""+basePath+"vote/votelist?page="+i+"\">"+i+"</a> </li>");   
-						   }
-						   if(ipage<zpage)
-								 out.print("<li><a href=\""+basePath+"vote/votelist?page="+(ipage+1)+"\">>></a> </li>");
-								else
-								 out.print("<li><a href=''>>></a> </li>");
-						%>
-						</ul>
 					</div>
 		        </div>
 		        <!--//other-->

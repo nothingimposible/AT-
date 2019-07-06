@@ -13,7 +13,7 @@ import pojo.Vote;
 @Mapper
 public interface VoteDao {
   public int insertVote(Vote vote);
-  public ArrayList<Vote> searchAll();
+  public ArrayList<Vote> searchAll(int num);
   public Vote searchOne();
   public ArrayList<Vote> searchName(Vote vote);
   public int selectId();
@@ -23,4 +23,6 @@ public interface VoteDao {
   public ArrayList<Vote> searchByUser(User user);
   public int updateVote(Vote vote);
   public int deleteVote(Vote vote);
+  public int searchpage();
+  public ArrayList<Vote> searchByName(Vote v);
 }
