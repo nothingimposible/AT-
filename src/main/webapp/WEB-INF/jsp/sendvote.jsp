@@ -62,6 +62,15 @@
 			margin-top: 20px;
 			border-style: none;
 		}
+		#VS_TIME{
+			width:250px;
+			height:30px;
+			font-size:20px;
+			border:2px solid green;
+			display: block;
+			border-radius: 5px;
+			margin-top: 20px;
+		}
 	</style>
 <body onload="s()">
 		<div class="createmain">
@@ -87,8 +96,9 @@
 							<input type="radio" name="VS_TYPE" value=1 checked="checked"/>
 							<span  style="margin-left: 20px;">多选</span>
 							<input type="radio" name="VS_TYPE" value=2 />
-							
-							
+
+							<h4 style="margin-top: 20px;">截止时间</h4>
+                            <input id="VS_TIME" name="VS_TIME" type="datetime-local" value="2019-07-10T13:59" min="2018-09-16" max="2030-09-26"/>
 							<input type="submit" value="发布投票" class="send"/>
 						</form>
 						<hr />
@@ -130,6 +140,8 @@
 				return d;
 			}
 			function del(id){
+				var linumber=getid("ul1").getElementsByTagName("li").length;
+				if(linumber>2){
 				getid("ul1").removeChild(getid(id));
 				for(i=parseInt(id);i<getid("ul1").childNodes.length;i++){
 					var aa="a"+getid("ul1").childNodes[i].id;
@@ -143,6 +155,9 @@
 					getid(spa).textContent="选项"+num;
 					getid(spa).id="spa"+aa2;
 					getid("ul1").childNodes[i].id=parseInt(getid("ul1").childNodes[i].id)-1;
+				}
+				}else{
+					alert("不能再删了");
 				}
 			}
 		//	b.addEventListener("click",s);

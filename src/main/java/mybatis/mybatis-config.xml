@@ -13,5 +13,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource="mybatis/VoteMapping.xml"/>
     <mapper resource="mybatis/OptionMapping.xml"/>
     <mapper resource="mybatis/ItemMapping.xml"/>
+     <mapper resource="mybatis/CommitMapping.xml"/>
    </mappers>
 </configuration>

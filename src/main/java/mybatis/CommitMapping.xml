@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.CommitDao">
+
+<insert id="insertcommit" parameterType="CommitText">
+  INSERT INTO vote_commit (VC_ID,VS_ID,VU_USER_NAME,VC_COMMIT,VC_TIME) VALUES(NULL,#{VS_ID},#{VU_USER_NAME},#{VC_COMMIT},#{VC_TIME})
+</insert>
+
+<select id="selectByVote" parameterType="Vote" resultType="CommitText">
+SELECT * FROM vote_commit WHERE VS_ID=#{VS_ID}
+</select>
+
+<select id="selectNumber" parameterType="Vote" resultType="Integer">
+SELECT COUNT(*) FROM vote_commit WHERE VS_ID=#{VS_ID}
+</select>
+</mapper>

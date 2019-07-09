@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import dao.CommitDao;
 import dao.ItemDao;
 import dao.OptionsDao;
 import dao.VoteDao;
+import pojo.CommitText;
 import pojo.Item;
 import pojo.Options;
 import pojo.User;
@@ -28,6 +30,8 @@ public class ItemController {
     private VoteDao voteDao;
     @Autowired
     private ItemDao itemDao;
+    @Autowired
+    private CommitDao commitDao;
 
 @RequestMapping(value="/additem")
 public String additem(HttpServletRequest request,HttpSession session){
@@ -57,6 +61,8 @@ public String additem(HttpServletRequest request,HttpSession session){
 		int number=itemDao.selectnumber(options.get(i));
 		num.add(number);
 	}
+	ArrayList<CommitText> ct=commitDao.selectByVote(vote);
+	request.setAttribute("ct", ct);
 	request.setAttribute("options", options);
 	request.setAttribute("num", num);
 	request.setAttribute("vote", vote);
@@ -72,7 +78,10 @@ public String result(HttpServletRequest request,HttpSession session){
 	ArrayList<Integer> flag=new ArrayList<Integer>();
 	User user=(User) session.getAttribute("useronline");
 	UserWithOptions uwp=new UserWithOptions();
+	if(user!=null)
 	uwp.setVU_USER_ID(user.getVU_USER_ID());
+	else
+	uwp.setVU_USER_ID("");
 	for(int i=0;i<options.size();i++){
 		int number=itemDao.selectnumber(options.get(i));
 		System.out.println("投票数："+number);
@@ -80,6 +89,9 @@ public String result(HttpServletRequest request,HttpSession session){
 		flag.add(itemDao.getflag(uwp));
 		num.add(number);
 	}
+	ArrayList<CommitText> ct=commitDao.selectByVote(vote);
+	request.setAttribute("user", user);
+	request.setAttribute("ct", ct);
 	request.setAttribute("flag", flag);
 	request.setAttribute("options", options);
 	request.setAttribute("num", num);

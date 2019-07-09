@@ -5,6 +5,7 @@ public class Vote {
   private String VS_TITLE;
   private int VS_TYPE;
   private String VU_USER_ID;
+  private String VS_TIME;
 public int getVS_ID() {
 	return VS_ID;
 }
@@ -30,11 +31,19 @@ public String getVU_USER_ID() {
 public void setVU_USER_ID(String vU_USER_ID) {
 	VU_USER_ID = vU_USER_ID;
 }
+
+public String getVS_TIME() {
+	return VS_TIME;
+}
+public void setVS_TIME(String vS_TIME) {
+	VS_TIME = vS_TIME;
+}
 @Override
 public String toString() {
 	return "Vote [VS_ID=" + VS_ID + ", VS_TITLE=" + VS_TITLE + ", VS_TYPE=" + VS_TYPE + ", VU_USER_ID=" + VU_USER_ID
-			+ "]";
+			+ ", VS_TIME=" + VS_TIME + "]";
 }
+
 
   
 }

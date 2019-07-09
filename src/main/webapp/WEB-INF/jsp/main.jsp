@@ -23,7 +23,7 @@
 		}
 		.main{
 			background: #D7DDE4;
-			height: 1000px;
+			height: 1200px;
 		}
 		.top{
 			height:70px ;
@@ -46,7 +46,7 @@
             margin-bottom: 0px;
         }
 		.center{
-			height: 800px;
+			height: 1200px;
 			
 		}
 		.center .vote{
@@ -157,7 +157,7 @@ else{
 					        <p id="username" class="username"><a href="${pageContext.request.contextPath }<%=url %>" ><%=name %></a>,<span>你好!</span></p>
 					    </div>
 					    <div class="login col-lg-2">
-					        <a href="${pageContext.request.contextPath }/user/login" class="destory">注册</a>
+					        <a href="${pageContext.request.contextPath }/user/add" class="destory">注册</a>
 					        <a href="${pageContext.request.contextPath }/user/logout" style="margin-left:10px" class="destory">注销</a>
 					    </div>
 					    <div class="login col-lg-2">

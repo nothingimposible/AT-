@@ -1,20 +1,24 @@
 package controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import dao.CommitDao;
 import dao.ItemDao;
 import dao.OptionsDao;
 import dao.VoteDao;
-import pojo.Item;
+import pojo.CommitText;
 import pojo.Options;
 import pojo.OptionsVo;
 import pojo.SubjectList;
@@ -31,6 +35,47 @@ public class VoteController {
     private VoteDao voteDao;
     @Autowired
     private ItemDao itemDao;
+    @Autowired
+    private CommitDao commitDao;
+    
+    public String changetime(String time){
+    	String s=time;
+    	String s1=time.substring(0, s.length()-7);
+    	String s2=time.substring(s.length()-5, s.length()-1);
+    	String s3=s1+s2;
+    	return s3;
+    }
+    
+    public Boolean isBetweenDate(String offDutyTime ,String endOffTime) {
+        Date startOffDate = null;
+        Date endOffDate = null;
+        Date checkOffDate = null; //打开时间
+        try {
+            startOffDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse("1970-01-01 12:00"); //开始时间
+            checkOffDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(offDutyTime);  //基准时间
+            endOffDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(endOffTime);//结束时间
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (checkOffDate.getTime() == startOffDate.getTime() || checkOffDate.getTime() == endOffDate.getTime()) {
+            return true;
+        }
+        Calendar date = Calendar.getInstance();
+        date.setTime(checkOffDate);
+     
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startOffDate);
+     
+        Calendar end = Calendar.getInstance();
+        end.setTime(endOffDate);
+     
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+ 
     
     @RequestMapping(value="/send")
     public String sendvote(){
@@ -44,6 +89,8 @@ public class VoteController {
         Vote vote1;
     	User user=(User) session.getAttribute("useronline");
     	int id=0;
+    	String stime=vote.getVS_TIME();
+    	vote.setVS_TIME(changetime(stime));
     	System.out.println("前");
     	vote.setVU_USER_ID(user.getVU_USER_ID());
       	int j1 = voteDao.insertVote(vote);
@@ -59,10 +106,9 @@ public class VoteController {
     		Options options=op.get(i);
     		System.out.println(options.toString());
     		optionsDao.insertOptions(options);
-    		
     	}
     	System.out.println("后");
-    	return "main";
+    	return "forward:/vote/votelist";
     }
     
     @RequestMapping(value="/search")
@@ -112,7 +158,9 @@ public class VoteController {
     	ArrayList<Vote> vote=voteDao.searchAll((page-1)*10);
     	ArrayList<Integer> flag=new ArrayList<Integer>();
     	User user=(User) session.getAttribute("useronline");
-    	
+    	 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    	   String nowtime=sdf.format(new Date());
+    	   
     	for(int i=0;i<vote.size();i++){
     		SubjectList sl=new SubjectList();
     		UserWithVote uwv=new UserWithVote();
@@ -128,8 +176,10 @@ public class VoteController {
     		sl.setOptions(opts);
     		sl.setUser(us);
     		sl.setVote(vote.get(i));
-    		
-    		flag.add(itemDao.isEmpty(uwv));
+    		if(itemDao.isEmpty(uwv)<1&&isBetweenDate(nowtime,vote.get(i).getVS_TIME()))
+    		flag.add(0);
+    		else
+    		flag.add(1);
     		list.add(sl);
     	}
     	
@@ -146,14 +196,18 @@ public class VoteController {
     }
     
     @RequestMapping(value="/vote")
-    public String vote(HttpServletRequest request){
+    public String vote(HttpServletRequest request,HttpSession session){
     	String stringid=request.getParameter("subjectid");
     	int id=Integer.parseInt(stringid);
     	Vote vote=voteDao.searchById(id);
     	ArrayList<Options> option=optionsDao.selectOptions(vote);
     	System.out.println(vote.toString());
+    	User user=(User) session.getAttribute("useronline");
     	for(Options e:option)
     		System.out.println(e.toString());
+    	ArrayList<CommitText> ct=commitDao.selectByVote(vote);
+    	request.setAttribute("user", user);
+    	request.setAttribute("ct", ct);
     	request.setAttribute("option", option);
     	request.setAttribute("vote", vote);
     	return "vote";
@@ -179,15 +233,15 @@ public class VoteController {
         vote.setVS_ID(voteid);
     	User user=(User) session.getAttribute("useronline");
     	vote.setVU_USER_ID(user.getVU_USER_ID());
-    	ArrayList<Options> options=optionsDao.selectOptions(vote);
+    	ArrayList<Options> options=optionsDao.selectOptions(vote);  //数据库
     	System.out.println(vote.toString());
         voteDao.updateVote(vote);
     	OptionsVo opv=vo;
     	ArrayList<Options> op=(ArrayList<Options>) opv.getLis();
-    	for(int i=0;i<op.size();i++){
+    	for(int i=0;i<op.size();i++){ //前端获取
     		System.out.println(op.get(i).getVO_TITLE());
     		if(i<options.size()){
-    			if(options.get(i).getVO_TITLE()==null){
+    			if(op.get(i).getVO_TITLE()==null){
     				itemDao.deleteByOptions(options.get(i));
     				optionsDao.deleteById(options.get(i));
     			}else{
@@ -214,9 +268,25 @@ public class VoteController {
     	User user = (User) session.getAttribute("useronline");
        ArrayList<Vote> vote=voteDao.searchByUser(user);
        ArrayList<Integer> votenum=new ArrayList<Integer>();
+       ArrayList<Integer> commitnum=new ArrayList<Integer>();
+       ArrayList<String> time=new ArrayList<String>();
+       ArrayList<String> timeflag=new ArrayList<String>();
+       SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+  	   String nowtime=sdf.format(new Date());
+
        for(int i=0;i<vote.size();i++){
     	  votenum.add( itemDao.selectvotenumber(vote.get(i)));
+    	  commitnum.add(commitDao.selectNumber(vote.get(i)));
+    	  time.add(vote.get(i).getVS_TIME());
+    	  if(isBetweenDate(nowtime,vote.get(i).getVS_TIME()))
+    		  timeflag.add("进行中");
+    	  else
+    		  timeflag.add("已截止");
+    	  System.out.println(isBetweenDate(nowtime,vote.get(i).getVS_TIME()));
        }
+      request.setAttribute("time", time);
+      request.setAttribute("timeflag", timeflag);
+      request.setAttribute("commitnum", commitnum);
       request.setAttribute("vote", vote);
       request.setAttribute("votenum", votenum);
       request.setAttribute("user", user);

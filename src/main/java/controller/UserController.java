@@ -39,7 +39,7 @@ public class UserController {
         us.setVU_VERSION(123);
        System.out.println(us.toString());
         userDao.insertUser(us);
-		return "login";
+		return "forward:/vote/votelist";
 		
 	}
 	@RequestMapping(value="/login")
@@ -56,6 +56,7 @@ public class UserController {
 	    model.addAttribute("username", us.getVU_USER_NAME());
 		if(userDao.searchUser(us)>0){
 			session.setAttribute("useronline", us);
+			session.setMaxInactiveInterval(60*60*24*7);
 			return "forward:/vote/votelist";
 			
 		}

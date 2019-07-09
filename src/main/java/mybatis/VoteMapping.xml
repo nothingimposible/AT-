@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    select * from vote_user
   </select> -->
  <insert id="insertVote" parameterType="Vote">
-   INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE,VU_USER_ID) VALUES(NULL,#{VS_TITLE},#{VS_TYPE},#{VU_USER_ID})
+   INSERT INTO vote_subject (VS_ID,VS_TITLE,VS_TYPE,VU_USER_ID,VS_TIME) VALUES(NULL,#{VS_TITLE},#{VS_TYPE},#{VU_USER_ID},#{VS_TIME})
  </insert>
  
  <select id="searchAll" resultType="Vote" parameterType="Integer">

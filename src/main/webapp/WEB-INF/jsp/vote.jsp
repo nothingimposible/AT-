@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@page import="java.util.ArrayList"%>
+<%@ page import="pojo.User" %>
 <%@ page import="pojo.Vote" %>
 <%@ page import="pojo.Options" %>
+<%@ page import="pojo.CommitText" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,7 +28,7 @@
 		.vote{
 			width: 60%;
 			margin-left: 20%;
-			height: 400px;
+		
 		
 		}
         .vote li{
@@ -53,6 +56,46 @@
 			display: block;
 		     width: 100%;
 		}
+		.commitregional{
+			width: 60%;
+			margin-left: 20%;
+			padding: 10px;
+			background: white;
+		
+		}
+		
+		.commit{
+			width: 100%;
+		
+		}
+		.commit textarea{
+			width: 400px;
+			height: 200px;
+			background: #eeeeee;
+			border: none;
+		}
+		.commit input{
+			width: 100px;
+			height: 50px;
+			border-style: none;
+			display: block;
+			margin-left: 20%;
+			background: #FFA500;
+			color: white;
+			margin-top: 20px;
+		}
+		
+		.committext li{
+			list-style: none;
+		}
+		.committext h4{
+			display: inline-block;
+			color: #2ECC71;
+		}
+		.committext span{
+			margin-left: 10px;
+			color: #A9A9A9;
+		}
 	</style>
 	
 <body>
@@ -65,12 +108,13 @@
     <%
 	  Vote vote=(Vote)request.getAttribute("vote");
       ArrayList<Options> option=(ArrayList<Options>)request.getAttribute("option");
+      ArrayList<CommitText> ct=(ArrayList<CommitText>)request.getAttribute("ct");
 	%>
 					<div class="vote">
 						<h3>投票</h3>
 						<hr />
 						<h1><%=vote.getVS_TITLE() %></h1>
-					    <p name="voteId" style="display: none;"><%=vote.getVS_ID() %></p>
+					    <p name="voteId" id="voteId" style="display: none;"><%=vote.getVS_ID() %></p>
 						  <form action="${pageContext.request.contextPath }/item/additem?voteId=<%=vote.getVS_ID() %>" method="post" class="form_table" id="form_table">
 							<ul>
 								<!-- <li>
@@ -90,15 +134,91 @@
 								%>
 							</ul>
 							 <input class="btn btn-danger" disabled="disabled" type="submit" value="投票" id="btn_submit" />
-						</form>
-						
-						
+						</form>	
 						<hr />
 					</div>
+					
+			 <div class="commitregional">
+				<div class="committext">
+					<h3>评论区</h3>
+					<ul id="commitul">
+					<%
+					if(ct!=null)
+					  for(int i=0;i<ct.size();i++){
+						  out.print("<li> <h4>"+ct.get(i).getVU_USER_NAME()+"</h4>");
+						  out.print("<span>●  "+ct.get(i).getVC_TIME()+"</span>");
+						  out.print("<p>"+ct.get(i).getVC_COMMIT()+"</p> </li>");
+					  }
+					%>
+						<!-- <li>
+							<h4>吧啦啦啦</h4><span>●  2019年6月15日18:53</span>
+							<p>啦啦啦啦啦啦滴滴滴滴滴滴</p>
+						</li> -->
+					</ul>
+				</div>
+				
+				<div class="commit">
+					<textarea name="inputc" id="inputc" placeholder="输入内容"></textarea>
+					<%
+					  User user=(User)request.getAttribute("user");
+					  if(user!=null)
+						  out.print("<input type=\"button\" value=\"发布\" onclick=\"sendcommit()\"/>");
+					  else
+						  out.print("<input type=\"button\" value=\"登录后评论\" style=\"background: red;color: white;\" />");
+					%>
+					
+				</div>
+			</div>
+					
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
+		function sendcommit(){
+			var idtext=document.getElementById("voteId").textContent;
+			var text=document.getElementById("inputc").value;
+			if(text==null||text.length<1){
+				alert("评论不能为空！");
+				return false;
+			}
+			else{
+			    $.ajax({
+	                type:'post',
+	                url:'http://localhost:8081/votesystem/addcommit',
+	                dataType:"json",//注意使用的是打他dataType，而不是Content-Type
+	                async: true,
+	                data:{committext:text,idtext:idtext},
+	                success:function(data){
+	                   if(data==null){
+	                       alert("发表评论失败！");
+	                   }
+	                   else{
+	                    //   alert("发表成功！"+data.VC_COMMIT+data.VU_USER_NAME+data.VC_TIME);
+	                       var ul=document.querySelector("#commitul");
+	           			var li=document.createElement("li");
+	           			var h4=document.createElement("h4");
+	           			var span=document.createElement("span");
+	           			var p=document.createElement("p");
+	           			h4.textContent=data.VU_USER_NAME;
+	           			span.textContent="● "+data.VC_TIME;
+	           			p.textContent=data.VC_COMMIT;
+	           			li.appendChild(h4);
+	           			li.appendChild(span);
+	           			li.appendChild(p);
+	           			ul.appendChild(li);
+	           			document.getElementById("inputc").value="";
+	                  //  window.location.href ="vote?subjectid="+idtext;
+	                   }
+	                },
+	                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+	            });
+			}
+		}
+		
 		function choose(inner){
 			var choose=inner;
 			 if (choose===null||choose===undefined){

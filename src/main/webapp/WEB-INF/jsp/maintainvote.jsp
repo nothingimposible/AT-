@@ -151,7 +151,7 @@
 								<h4>投票标题</h4>
 							</div>
 							<div class="votecenter">
-								<p>发布者 </p>
+								<p>截止时间 </p>
 							</div>
 							<div class="number">
 								投票总数
@@ -170,53 +170,30 @@
 						   ArrayList<Vote> vote=(ArrayList)request.getAttribute("vote");
 						   ArrayList<Integer> votenum=(ArrayList)request.getAttribute("votenum");
 						   User user=(User)request.getAttribute("user");
+						   ArrayList<Integer> commitnum=(ArrayList)request.getAttribute("commitnum");
+						   ArrayList<String> time=(ArrayList)request.getAttribute("time");
+						   ArrayList<String> timeflag=(ArrayList)request.getAttribute("timeflag");
 						   for(int i=0;i<vote.size();i++){
 							   out.print("<div class='vote'>");
 							   out.print("<div class='voteleft'>");
 							   out.print("<p>"+vote.get(i).getVS_TITLE()+"</p>");
 							   out.print("</div><div class='votecenter'>");
-							   out.print("<p>"+user.getVU_USER_NAME()+" </p>");
-							   out.print("</div><div class='number'>"+votenum.get(i)+"票</div><div class='statis'>进行中</div>");
-							   out.print("<div class='comment'>3</div><div class='voteright'><p>");
+							   out.print("<p>"+time.get(i)+" </p>");
+							   out.print("</div><div class='number'>"+votenum.get(i)+"票</div><div class='statis'>"+timeflag.get(i)+"</div>");
+							   out.print("<div class='comment'>"+commitnum.get(i)+"</div><div class='voteright'><p>");
 							   out.print("<a href='"+basePath+"item/result?subjectid="+vote.get(i).getVS_ID()+"'>统计</a>");
 							   out.print("<a href='"+basePath+"vote/deletevote?subjectid="+vote.get(i).getVS_ID()+"'>删除</a>");
 							   out.print("<a href='"+basePath+"vote/changevote?subjectid="+vote.get(i).getVS_ID()+"'>修改</a>");
 							   out.print("</p></div></div>");
 						   }
 						%>
-						<!-- <div class="vote">
-							<div class="voteleft">
-								<p>吧啦吧啦吧氨基酸的噶三季度咖喱</p>
-							</div>
-							<div class="votecenter">
-								<p>xxx </p>
-							</div>
-							<div class="number">
-								15票
-							</div>
-							<div class="statis">
-								进行中
-							</div>
-							<div class="comment">
-								3
-							</div>
-							<div class="voteright">
-								<p><a>统计</a><a>删除</a><a>修改</a></p>	
-							</div>
-						</div> -->
-						
 						
 		            </div>
 		        </div>
 		        <!--//bottom-->
 		        <div class="col-log-12">
 		            <div class="last">
-						<ul class="page">
-							<li><a href="#"><<</a> </li>
-							<li><a href="#">1</a> </li>
-							<li><a href="#">2</a> </li>
-							<li><a href="#">>></a> </li>
-						</ul>
+						
 					</div>
 		        </div>
 		        <!--//other-->
