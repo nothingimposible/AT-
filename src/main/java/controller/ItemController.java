@@ -62,6 +62,7 @@ public String additem(HttpServletRequest request,HttpSession session){
 		num.add(number);
 	}
 	ArrayList<CommitText> ct=commitDao.selectByVote(vote);
+	request.setAttribute("user", user);
 	request.setAttribute("ct", ct);
 	request.setAttribute("options", options);
 	request.setAttribute("num", num);

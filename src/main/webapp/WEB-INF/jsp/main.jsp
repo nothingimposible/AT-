@@ -23,7 +23,7 @@
 		}
 		.main{
 			background: #D7DDE4;
-			height: 1200px;
+			height: 1300px;
 		}
 		.top{
 			height:70px ;
@@ -91,6 +91,7 @@
 			display: block;
 			list-style: none;
 			margin-left: 40%;
+			margin-top: -50px;
 		}
 		.last .page a{
 			float: left;

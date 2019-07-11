@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  </select>
  
  <update id="updateVote" parameterType="Vote">
- UPDATE vote_subject SET VS_TITLE=#{VS_TITLE},VS_TYPE=#{VS_TYPE} WHERE VS_ID=#{VS_ID}
+ UPDATE vote_subject SET VS_TITLE=#{VS_TITLE},VS_TYPE=#{VS_TYPE},VS_TIME=#{VS_TIME} WHERE VS_ID=#{VS_ID}
  </update>
  
  <delete id="deleteVote" parameterType="Vote">

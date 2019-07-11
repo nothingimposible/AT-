@@ -40,12 +40,11 @@ public class VoteController {
     
     public String changetime(String time){
     	String s=time;
-    	String s1=time.substring(0, s.length()-7);
-    	String s2=time.substring(s.length()-5, s.length()-1);
-    	String s3=s1+s2;
+    	String s3;
+    	s3=s.replace("T", " ");
     	return s3;
     }
-    
+  
     public Boolean isBetweenDate(String offDutyTime ,String endOffTime) {
         Date startOffDate = null;
         Date endOffDate = null;
@@ -228,6 +227,8 @@ public class VoteController {
     @RequestMapping(value="/savechange")
     public String savechange(@ModelAttribute Vote vot,OptionsVo vo,HttpSession session,HttpServletRequest request){
     	Vote vote=vot;
+    	String stime=vote.getVS_TIME();
+    	vote.setVS_TIME(changetime(stime));
         int voteid=Integer.parseInt(request.getParameter("subjectid"));
         System.out.println("voteid="+voteid);
         vote.setVS_ID(voteid);

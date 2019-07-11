@@ -114,7 +114,8 @@
 							<span  style="margin-left: 20px;">多选</span>
 							<input type="radio" name="VS_TYPE" value=2 <%=rad2 %>/>
 							
-							
+							<h4 style="margin-top: 20px;">截止时间</h4>
+                            <input id="VS_TIME" name="VS_TIME" type="datetime-local" value="2019-07-10T13:59" min="2018-09-16" max="2030-09-26"/>
 							<input type="submit" value="保存修改" class="send"/>
 						</form>
 						<hr />
