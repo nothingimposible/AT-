@@ -43,7 +43,6 @@ public class CommitController {
     	System.out.println(ct.toString());
     	JSONObject jb=new JSONObject().fromObject(ct);
         System.out.println(jb.toString());
-    	  response.getWriter().write(jb.toString());
-    	  
+    	response.getWriter().write(jb.toString());  
      }
 }
